@@ -29,9 +29,15 @@ letters = ''.join((random.choice(string.letters)) for i in range(letters_count))
 special = ''.join((random.choice(string.punctuation)) for i in range(special_count))
 
 #Combine randomly generated lists into a single entity and assign password length variable.
-password = numbers + letters + special
+numbers_to_string = ''
+for i in range(numbers_count):
+	numbers_to_string +='i'
+password = numbers_to_string + letters + special
 password_length = numbers_count + letters_count + special_count
 
 #Print generated password to STDOUT.
 print ("Your generated password is: ")
-print ''.join((random.choice(password)) for i in range(password_length))
+print ''.join(random.shuffle(password))
+#for i in range(password_length))
+#for i in range(numbers_count):
+#	print numbers[i]
