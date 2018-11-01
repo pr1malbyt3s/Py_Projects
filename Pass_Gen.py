@@ -25,7 +25,7 @@ special_count = input_validate("Enter number of desired special characters in pa
 
 #Generate randomly assigned, desired length lists of numbers, letters, and special characters.
 numbers = ''.join((random.choice(string.digits)) for i in range(numbers_count))
-letters = ''.join((random.choice(string.letters)) for in in range(letters_count))
+letters = ''.join((random.choice(string.letters)) for i in range(letters_count))
 special = ''.join((random.choice(string.punctuation)) for i in range(special_count))
 
 #Combine randomly generated lists into a single entity and assign password length variable.
@@ -34,4 +34,4 @@ password_length = numbers_count + letters_count + special_count
 
 #Print generated password to STDOUT.
 print ("Your generated password is: ")
-print ''.join((random.choice(password)) for i in range(password_lenght))
+print ''.join((random.choice(password)) for i in range(password_length))
