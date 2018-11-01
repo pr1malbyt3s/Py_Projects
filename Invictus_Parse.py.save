@@ -6,8 +6,8 @@ import requests
 #url = input("Enter URL for parsing: ")
 
 page = requests.get('https://www.crossfitinvictus.com/wod/october-25-2018-performance/')
-tree = html.fromstring(page.content)
+respData = html.fromstring(req,content)
 
-data = tree.xpath('//p/text()')
+data = respData.xpath('<p>(.*?)</p>')
 
 print(data)
