@@ -28,11 +28,7 @@ numbers = ''.join((random.choice(string.digits)) for i in range(numbers_count))
 letters = ''.join((random.choice(string.letters)) for i in range(letters_count))
 special = ''.join((random.choice(string.punctuation)) for i in range(special_count))
 
-
-#numbers_to_string = ''
-#numbers_to_string +=numbers[i] for i in range(numbers_count):
-
-#Combine randomly generated lists into a single entity and assign password length variable.
+#Combine randomly generated lists into a single entity.
 password = numbers + letters + special
 
 #Make a list out of password string and shuffle it.
