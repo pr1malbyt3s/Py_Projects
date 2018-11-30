@@ -9,9 +9,8 @@ port = 31802
 # Create socket and connect
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
-
+data = s.recv(4096)
 while True:
-  data = s.recv(4096)
   if data:
     print(data)
     data = s.recv(4096)
