@@ -14,16 +14,14 @@ buffer = ''
 while True:
   data = s.recv(1024)
   if data:
-    stringdata = data.decode('utf-8')
     print data
-    print stringdata
-    if "/nup" in stringdata:
+    if "/nup" in data.decode('utf-8'):
       s.send(b"^")
-    elif "/ndown" in stringdata:
+    elif "/ndown" in data.decode('utf-8'):
       s.send(b"V")
-    elif "/nleft" in stringdata:
+    elif "/nleft" in data.decode('utf-8'):
       s.send(b"<")
-    elif "/nright" in stringdata:
+    elif "/nright" in data.decode('utf-8'):
       s.send(b">")
   else:
     break
