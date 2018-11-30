@@ -10,19 +10,16 @@ port = 31802
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
 
-#while True:
-data = s.recv(1024).decode('utf-8')
-if "\nup" in data:
-  s.send("^".encode('utf-8')
-elif "\ndown" in data:
-  s.send("V".encode('utf-8'))
-  data
-elif "\nleft" in data:
-  s.send("<".encode('utf-8'))
-  data
-elif "\nright" in data:
-  s.send(">".encode('utf-8'))
-  data
+while True:
+  data = s.recv(1024).decode('utf-8')
+  if '\nup' in data:
+    s.send("^".encode('utf-8')
+  elif '\ndown' in data:
+    s.send("V".encode('utf-8'))
+  elif '\nleft' in data:
+    s.send("<".encode('utf-8'))
+  elif '\nright' in data:
+    s.send(">".encode('utf-8'))
 # Close connection
 print(data)
 s.close()
