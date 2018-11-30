@@ -22,7 +22,5 @@ while True:
       s.send(b"<")
     elif "/nright" in sdata:
       s.send(b">")
-  else:
-    break
 # Close connection
 s.close()
