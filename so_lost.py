@@ -13,7 +13,7 @@ s.connect((host, port))
 while True:
   data = s.recv(1024).decode('utf-8')
   if '\nup' in data:
-    s.send("^".encode('utf-8')
+    s.send("^".encode('utf-8'))
   elif '\ndown' in data:
     s.send("V".encode('utf-8'))
   elif '\nleft' in data:
