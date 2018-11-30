@@ -16,6 +16,7 @@ while True:
   if data:
     stringdata = data.decode('utf-8')
     print data
+    print stringdata
     if "/nup" in stringdata:
       s.send(b"^")
     elif "/ndown" in stringdata:
