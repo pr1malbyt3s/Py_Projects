@@ -14,9 +14,8 @@ buffer = ''
 while True:
   data = s.recv(1024)
   if data:
-    buffer += data
     stringdata = data.decode('utf-8')
-    print buffer
+    print data
     if "/nup" in stringdata:
       s.send(b"^")
     elif "/ndown" in stringdata:
