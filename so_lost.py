@@ -20,6 +20,8 @@ while True:
     s.send("<".encode('utf-8'))
   elif '\nright' in data:
     s.send(">".encode('utf-8'))
+  else:
+      break
 # Close connection
 print(data)
 s.close()
