@@ -12,11 +12,8 @@ s.connect((host, port))
 
 #while True:
 data = s.recv(1024).decode('utf-8')
-print(data)
 if "\nup" in data:
   s.send("^".encode('utf-8')
-  mesg = s.recv(1024)
-  print(mesg)
 elif "\ndown" in data:
   s.send("V".encode('utf-8'))
   data
@@ -27,4 +24,5 @@ elif "\nright" in data:
   s.send(">".encode('utf-8'))
   data
 # Close connection
+print(data)
 s.close()
