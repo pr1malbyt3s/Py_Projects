@@ -11,10 +11,15 @@ s.connect((host, port))
  
 # Receives up to 1024 bytes
 data = s.recv(1024)
-print "Received data: " + repr(data)
- 
-# Send response
-s.send("Hello World!\n")
+stringdata = data.decode('utf-8')
+if "/nup" in stringdata:
+ s.send(b"^")
+elif "/ndown" in stringdata:
+ s.send(b"V")
+elif "/nleft" in stringdata:
+ s.send(b"<")
+elif "/nright" in stringdata:
+ s.send(b">")
  
 # Close connection
 s.close()
