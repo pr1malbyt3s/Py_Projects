@@ -14,9 +14,9 @@ while True:
     data = s.recv(1024)
     print(data)
     sdata = data.decode('utf-8')
-    if "/nup" sdata:
+    if "/nup" in sdata:
       s.send(b"^")
-    elif "/ndown" sdata:
+    elif "/ndown" in sdata:
       s.send(b"V")
     elif "/nleft" in sdata:
       s.send(b"<")
