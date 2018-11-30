@@ -15,8 +15,8 @@ data = s.recv(1024).decode('utf-8')
 print(data)
 if "\nup" in data:
   s.send("^".encode('utf-8')
-  data = s.recv(1024)
-  print(data)
+  mesg = s.recv(1024)
+  print(mesg)
 elif "\ndown" in data:
   s.send("V".encode('utf-8'))
   data
