@@ -11,17 +11,17 @@ s.connect((host, port))
 
 while 1:
 # Receives up to 1024 bytes
-data = s.recv(1024)
-print data
-stringdata = data.decode('utf-8')
-if "/nup" in stringdata:
- s.send(b"^")
-elif "/ndown" in stringdata:
- s.send(b"V")
-elif "/nleft" in stringdata:
- s.send(b"<")
-elif "/nright" in stringdata:
- s.send(b">")
+ data = s.recv(1024)
+ print data
+ stringdata = data.decode('utf-8')
+ if "/nup" in stringdata:
+  s.send(b"^")
+ elif "/ndown" in stringdata:
+  s.send(b"V")
+ elif "/nleft" in stringdata:
+  s.send(b"<")
+ elif "/nright" in stringdata:
+  s.send(b">")
  
 # Close connection
-s.close()
+ s.close()
