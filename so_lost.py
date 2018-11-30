@@ -9,18 +9,18 @@ port = 31802
 # Create socket and connect
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
-data = s.recv(4096)
+#data = s.recv(4096)
 while True:
-  if data:
+    data = s.recv(1024)
     print(data)
-    if "/nup" in data.decode('utf-8'):
-      back=s.send(b"^")
-      print back
-    elif "/ndown" in data.decode('utf-8'):
+    sdata = data.decode('utf-8')
+    if "/nup" sdata:
+      s.send(b"^")
+    elif "/ndown" sdata:
       s.send(b"V")
-    elif "/nleft" in data.decode('utf-8'):
+    elif "/nleft" in sdata:
       s.send(b"<")
-    elif "/nright" in data.decode('utf-8'):
+    elif "/nright" in sdata:
       s.send(b">")
   else:
     break
