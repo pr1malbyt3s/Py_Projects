@@ -13,17 +13,19 @@ s.connect((host, port))
 buffer = ''
 while True:
   data = s.recv(1024)
-  buffer += data
-  stringdata = data.decode('utf-8')
-  print buffer
-  if "/nup" in stringdata:
-   s.send(b"^")
-  elif "/ndown" in stringdata:
-   s.send(b"V")
-  elif "/nleft" in stringdata:
-   s.send(b"<")
-  elif "/nright" in stringdata:
-   s.send(b">")
- 
+  if data:
+    buffer += data
+    stringdata = data.decode('utf-8')
+    print buffer
+    if "/nup" in stringdata:
+      s.send(b"^")
+    elif "/ndown" in stringdata:
+      s.send(b"V")
+    elif "/nleft" in stringdata:
+      s.send(b"<")
+    elif "/nright" in stringdata:
+      s.send(b">")
+  else:
+    break
 # Close connection
 s.close()
