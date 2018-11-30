@@ -11,7 +11,7 @@ s.connect((host, port))
  
 # Receives up to 1024 bytes
 data = s.recv(1024)
-s.listen()
+s.listen(1)
 stringdata = data.decode('utf-8')
 if "/nup" in stringdata:
  s.send(b"^")
