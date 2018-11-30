@@ -13,7 +13,6 @@ data = s.recv(4096)
 while True:
   if data:
     print(data)
-    data = s.recv(4096)
     if "/nup" in data.decode('utf-8'):
       back=s.send(b"^")
       print back
