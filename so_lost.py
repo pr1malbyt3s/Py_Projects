@@ -1,6 +1,8 @@
+#!/usr/bin/env/python3
+
 import socket
  
-host = 'challenge.acictf.com'
+host = '52.61.142.146'
 port = 31802
  
 # Create socket and connect
