@@ -10,7 +10,7 @@ port = 31802
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
 
- while 1:
+while 1:
   data = s.recv(1024)
   print data
   stringdata = data.decode('utf-8')
@@ -24,4 +24,4 @@ s.connect((host, port))
    s.send(b">")
  
 # Close connection
-  s.close()
+s.close()
