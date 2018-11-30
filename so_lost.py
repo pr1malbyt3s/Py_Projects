@@ -13,13 +13,13 @@ s.connect((host, port))
 while True:
     data = s.recv(1024).decode('utf-8')
     print(data)
-    if "/nup" in data:
+    if "\nup" in data:
       s.send("^".encode('utf-8'))
-    elif "/ndown" in data:
+    elif "\ndown" in data:
       s.send("V".encode('utf-8'))
-    elif "/nleft" in data:
+    elif "\nleft" in data:
       s.send("<".encode('utf-8'))
-    elif "/nright" in data:
+    elif "\nright" in data:
       s.send(">".encode('utf-8'))
 # Close connection
 s.close()
