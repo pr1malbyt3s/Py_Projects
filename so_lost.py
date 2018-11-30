@@ -12,7 +12,7 @@ s.connect((host, port))
 
 buffer = ''
 while True:
-  data = s.recv(1024)
+  data = s.recv(4096)
   if data:
     print data
     if "/nup" in data.decode('utf-8'):
