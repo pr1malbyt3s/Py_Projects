@@ -25,4 +25,4 @@ try:
    s.send(b">")
  
 # Close connection
-s.close()
+  s.close()
