@@ -31,9 +31,9 @@ class BurpExtender(IBurpExtender, ISessionHandlingAction):
 	def performAction(self, currentRequest, macroItems):
 		#Update the Key name.
 		Key = "KEYNAME"
-    #Update the Key value.
-    Secret = "S3cr3t-@p1-K3y"
-    Secret = Secret.encode('utf-8')
+    		#Update the Key value.
+    		Secret = "S3cr3t-@p1-K3y"
+   		Secret = Secret.encode('utf-8')
 
 		stdout = PrintWriter(self._callbacks.getStdout(), True)
 		requestInfo = self._helpers.analyzeRequest(currentRequest)
@@ -59,7 +59,7 @@ class BurpExtender(IBurpExtender, ISessionHandlingAction):
                 if BodyStr:
                     BodyStr256 = hashlib.sha256(BodyStr.encode()).hexdigest()
                 else:
-                    BodyStr256 = BodyStr
+                    BodyStr256 = ""
 
 		#Get time and convert it to specified format.
 		timestamp = datetime.utcnow()
