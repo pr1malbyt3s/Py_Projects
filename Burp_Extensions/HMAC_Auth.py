@@ -46,13 +46,18 @@ class BurpExtender(IBurpExtender, ISessionHandlingAction):
 
                 #Get request method.
                 method = requestInfo.getMethod()
+		
+		#Get request headers.
+		headers = requestInfo.getHeaders()
 
                 #Set contentType (Content-Type) value depending on method.
                 if method == "GET" or method == "DELETE":
                     contentType = ""
                 else:
                     contentType = "application/json"
-				
+	 	    contentTypeheader = "Content-Type: " + contentType
+		    headers.add(contentTypeheader)
+		
 		#Get body and perform SHA256 sum if not empty.
 		BodyBytes = currentRequest.getRequest()[requestInfo.getBodyOffset():]
 		BodyStr = self._helpers.bytesToString(BodyBytes)
@@ -76,8 +81,7 @@ class BurpExtender(IBurpExtender, ISessionHandlingAction):
 		#Printed to Burp UI for debugging.
                 stdout.println(_hmac)
 		
-		#Generate headers.
-		headers = requestInfo.getHeaders()
+		#Generate and add authentication headers.
                 hmacauthheader = "Authorization:" + Key + ":" + _hmac.decode("utf-8")
                 hmactimeheader = "Timestamp:" + timestamp
 		headers.add(hmacauthheader)
