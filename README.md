@@ -1,2 +1,2 @@
 # Py_Projects
-This repository contains items written in the Python progamming language. It is moreso for my practice and maintenance of Python Proficiency. Beware, as it is not by any means well-maintained.
+This repository contains items written in the Python progamming language. Here you will find various CTF/Programming competition scripts written in Python. There may be a new personal or professional project, such as a Burp Suite extension from time to time.
