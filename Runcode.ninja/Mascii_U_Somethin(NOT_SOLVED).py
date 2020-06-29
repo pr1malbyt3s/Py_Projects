@@ -1,25 +1,34 @@
-#!/usr/bin/env python
-#This script will read from a file that contains pairs of numbers on each line. Using the pair, it will determine all the numbers between 1 and the larger number(inclusive) that are divisible by the first number.
+#!/usr/bin/env python3
+# This script accepts a list of mixed type values (octal, binary, char, etc.) from an input file and prints the corresponding ascii.
 
-#Import sys module to use sys.argv.
-import sys, binascii
 
-#Intitialize two lists, one lower number and one for higher number.
+import sys
+
+# Create a list to store each item from the input file.
 numList = []
 
-#Read from the file supplied to command arguments and create the two lists from its entries.	
-file = open(sys.argv[1], "r")
-for line in file:
-	for num in line.split():
-		numList.append(num)
-print numList
+# Read input file and store items to list.
+with open(sys.argv[1], "r") as f:
+	for line in f:
+		for item in line.strip().split():			
+			numList.append(item)
 
-def data_chef(stuff):
+# data_chef function that processes and individual value and appends its ascii value to a list.
+def data_chef(stuff, stufflist):
 	if stuff.startswith('0x'):
-		#print(stuff[:2].decode("hex"))
-		print(stuff)
+		stufflist.append(chr(int(stuff,16)))
 	elif stuff.startswith('0b'):
-		sys.stdout.write(binascii.b2a_uu(stuff))
+		stufflist.append(chr(int(stuff,2)))
+	elif stuff.startswith('0'):
+		stufflist.append(chr(int(stuff,8)))
+	else:
+		stufflist.append(chr(int(stuff)))
 
-for thing in numList:
-	data_chef(thing)
+# Initiated list to use with the data_chef function.
+charList = []
+# Iterate through the numList and peform data_chef on each item.
+for thing in (numList):
+	data_chef(thing, charList)
+
+# Print the ascii result via charList.
+print(*charList, sep="")
