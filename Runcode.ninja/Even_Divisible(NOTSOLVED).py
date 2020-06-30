@@ -1,27 +1,38 @@
-#!/usr/bin/env python
-#This script will read from a file that contains pairs of numbers on each line. Using the pair, it will determine all the numbers between 1 and the larger number(inclusive) that are divisible by the first number.
+#!/usr/bin/env python3
 
-#Import sys module to use sys.argv.
 import sys
+from decimal import Decimal
 
-#Intitialize two lists, one lower number and one for higher number.
-numList = []
+def type_check(x):
+	try:
+		if isinstance(int(x), int) == True:
+			return int(x)
+	except ValueError:
+		try:
+			if isinstance(float(x), float) == True:
+				return Decimal(x)
+		except ValueError:
+			return 0
 
-#Read from the file supplied to command arguments and create the two lists from its entries.	
-file = open(sys.argv[1], "r")
-for line in file:
-	for num in line.split():
-		numList.append(num)
+def evenly_divisible(x, y):
+	a = type_check(x)
+	b = type_check(y)
+	for i in range(1, b+1):
+		if i % a == 0:
+			print(i)
 
-#Iterate the through the range of numbers for each pair and return the numbers that are divisible in the range.
-for x in range(0, len(numList) - 3, 2):
-	for y in range(int(numList[x]),int(numList[x+1])+1):
-		if y % int(numList[x]) == 0:
-			print(y)
-	print("")
-	
-#Used to print the output from the last two numbers in each list to avoid a final space.
-for z in range(int(numList[len(numList)-2]),int(numList[len(numList)-1])):
-	if z % int(numList[len(numList)-2]) == 0:
-		print(z)
-			
+def main():
+	first = []
+	second = []
+	with open(sys.argv[1], 'r') as f:
+		for line in f:
+			first.append(line.split()[0])
+			second.append(line.split()[1])
+	z = len(first)	
+	for j in range(z-1):
+		evenly_divisible(first[j], second[j])
+		print()
+	evenly_divisible(first[z-1], second[z-1])
+
+if __name__ == "__main__":
+	main()
