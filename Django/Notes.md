@@ -36,7 +36,7 @@ ALTER ROLE django_migrate SET SEARCH_PATH TO django_schema, public;
 - Create app user role and assign permissions:
 ```
 CREATE USER django_app WITH PASSWORD '<PASSWORD>';
-ALTER ROLE djano_app SET SEARCH_PATH TO django_schema;
+ALTER ROLE django_app SET SEARCH_PATH TO django_schema;
 ```
 - Create holistic Django read/write role and assign to app and migration users:
 ```
@@ -75,4 +75,5 @@ DATABASES = {
 }
 
 ```
+- Perform database migrations:
 ```python manage.py migrate --database=migration```
