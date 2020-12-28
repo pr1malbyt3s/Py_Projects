@@ -41,6 +41,31 @@ ALTER DATABASE djangodb OWNER TO django_migrate;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO django_migrate;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO django_migrate;
 ```
+- Create a password storage method:
+-- Add the following to settings.py:
+```
+import json
+from django.core.exceptions import ImproperlyConfigured
+
+with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
+    secrets = json.load(secrets_file)
+
+def get_secret(setting, secrets=secrets):
+    """Get secret setting"""
+    try:
+        return secrets[setting]
+    except KeyError:
+        raise ImproperlyConfigured("Set the {} setting".format(setting))
+```
+-- Add a secrets.json file in the base path:
+```
+{
+	"APP_PASS": "<django_app_pass>",
+	"MIGRATE_PASS": "<django_migrate_pass>",
+	"SECRET_KEY": "<secret_key>"
+}
+
+```
 - Alter the Django settings.py DATABASES:
 ```
 DATABASES = {
@@ -48,7 +73,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'djangodb',
         'USER': 'django_app',
-        'PASSWORD': '<PASSWORD>',
+        'PASSWORD': get_secret('APP_PASS'),
         'HOST': '127.0.0.1',
         'PORT': '5432'
     },
@@ -56,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'djangodb',
         'USER': 'django_migrate',
-        'PASSWORD': '<PASSWORD>',
+        'PASSWORD': get_secret('MIGRATE_PASS'),
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
