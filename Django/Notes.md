@@ -1,9 +1,9 @@
 # Django Notes
 
-Install Django using pip:
+## Install Django using pip:
 ```pip install Django```
   
-Install PostgreSQL:
+## Install PostgreSQL:
 - Download psycopg2:
 ```pip install psycopg2-binary```
 - Create the file respository configuration:
@@ -19,7 +19,8 @@ Install PostgreSQL:
 sudo -u postgres psql postgres
 \password postgres
 ```
-Setup Database and Users:
+## Setup Database and Users:
+* Need to verify best security practices with users and app separation *
 - Create database and update permissions:
 ```
 CREATE DATABASE djangodb;
@@ -90,3 +91,77 @@ DATABASES = {
 ```
 - Perform database migrations:
 ```python manage.py migrate --database=migration```
+## Models:
+Models are essentially the database layout and contain the essential fields and behaviors of stored data. An example using the polls app is below:
+```
+import datetime
+from django.db import models
+from django.utils import timezone
+
+# Question model:
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+    def __str__(self):
+        return self.question_text
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+# Choice model:
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    def __str__(self):
+        return self.choice_text
+```
+## Admin site:
+Pretty self-explanatory. Admin superusers are created by running ```python manage.py createsuperuser```. The admin.py file can be used to edit front end model content from an administrative perspective. An example can be seen below using the Question model in the polls app:
+```
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
+```
+## Views:
+A view is a "type" of Web page in Django generally serving a specific function and having a specific template. Examples for the polls application include:
+- Question 'index' page displaying the latest few question.
+- Question 'detail' page displaying a question text and form to vote.
+- Question 'results' page displaying particular question results.
+- Vote action - handles voting for a particular choice in a particular question.
+Each view is represented as a Python function or method. Views also need corresponding URL mappings. Below are examples of corresponding views.py and urls.py pages for the polls application:
+```
+# views.py
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("At the polls index.")
+
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+```
+```
+# urls.py
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    # Ex: /polls/
+    path('', views.index, name='index'),
+    # Ex: /polls/<#>/
+    path('<int:question_id>/', views.detail, name='detail'),
+    # Ex: /polls/<#>/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # Ex: /polls/<#>/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
