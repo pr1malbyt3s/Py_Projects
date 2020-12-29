@@ -20,7 +20,7 @@ sudo -u postgres psql postgres
 \password postgres
 ```
 ## Setup Database and Users:
-* Need to verify best security practices with users and app separation *
+**Need to verify best security practices with users and app separation**
 - Create database and update permissions:
 ```
 CREATE DATABASE djangodb;
@@ -68,7 +68,7 @@ def get_secret(setting, secrets=secrets):
 
 ```
 - Alter the Django settings.py DATABASES:
-* Need to adjust for separate settings file *
+**Need to adjust for separate settings file**
 ```
 DATABASES = {
     'default': {
@@ -166,8 +166,8 @@ urlpatterns = [
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
 ```
-* Need to add more about forms and generic views *
+**Need to add more about forms and generic views**
 ## Tests:
-* Need to add a tests section *
+**Need to add a tests section**
 ## Static Files:
-* Need to add a static files section *
+**Need to add a static files section**
