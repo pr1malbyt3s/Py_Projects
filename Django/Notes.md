@@ -106,7 +106,7 @@ def get_secret(setting, secrets=secrets):
 
 ```
 - Alter the Django settings.py DATABASES:
-```json
+```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
