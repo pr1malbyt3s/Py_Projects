@@ -70,41 +70,40 @@ GRANT django_rw TO django_app;
 ALTER DEFAULT PRIVILEGES FOR USER django_migrate GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO django_rw;
 ALTER DEFAULT PRIVILEGES FOR USER django_migrate GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO django_rw;
 ```
--- In the event database issues arise, run the following sequence of commands to purge above actions:
-```sql
-DROP DATABASE djangodb;
-DROP USER django_app;
-DROP SCHEMA django;
-ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE SELECT, INSERT, UPDATE, DELETE ON TABLES FROM django_rw;
-ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE USAGE, SELECT, UPDATE ON SEQUENCES FROM django_rw;
-DROP USER django_rw;
-DROP USER django_migrate;
-```
+  - In the event database issues arise, run the following sequence of commands to purge above actions:
+  ```sql
+  DROP DATABASE djangodb;
+  DROP USER django_app;
+  DROP SCHEMA django;
+  ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE SELECT, INSERT, UPDATE, DELETE ON TABLES FROM django_rw;
+  ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE USAGE, SELECT, UPDATE ON SEQUENCES FROM django_rw;
+  DROP USER django_rw;
+  DROP USER django_migrate;
+  ```
 - Create a password storage method:
--- Add the following to settings.py:
-```python
-import json
-from django.core.exceptions import ImproperlyConfigured
+  - Add the following to settings.py:
+  ```python
+  import json
+  from django.core.exceptions import ImproperlyConfigured
+  
+  with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
+      secrets = json.load(secrets_file)
 
-with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
-    secrets = json.load(secrets_file)
-
-def get_secret(setting, secrets=secrets):
-    """Get secret setting"""
-    try:
-        return secrets[setting]
-    except KeyError:
-        raise ImproperlyConfigured("Set the {} setting".format(setting))
-```
--- Add a secrets.json file in the base path with the following contents:
-```json
-{
-	"APP_PASS": "<django_app_pass>",
-	"MIGRATE_PASS": "<django_migrate_pass>",
-	"SECRET_KEY": "<secret_key>"
-}
-
-```
+  def get_secret(setting, secrets=secrets):
+      """Get secret setting"""
+      try:
+          return secrets[setting]
+      except KeyError:
+          raise ImproperlyConfigured("Set the {} setting".format(setting))
+  ```
+  - Add a secrets.json file in the base path with the following contents:
+  ```json
+  {
+  	"APP_PASS": "<django_app_pass>",
+  	"MIGRATE_PASS": "<django_migrate_pass>",
+  	"SECRET_KEY": "<secret_key>"
+  }
+  ```
 - Alter the Django settings.py DATABASES:
 ```python
 DATABASES = {
