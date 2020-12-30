@@ -70,16 +70,16 @@ GRANT django_rw TO django_app;
 ALTER DEFAULT PRIVILEGES FOR USER django_migrate GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO django_rw;
 ALTER DEFAULT PRIVILEGES FOR USER django_migrate GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO django_rw;
 ```
-  - In the event database issues arise, run the following sequence of commands to purge above actions:
-  ```sql
-  DROP DATABASE djangodb;
-  DROP USER django_app;
-  DROP SCHEMA django;
-  ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE SELECT, INSERT, UPDATE, DELETE ON TABLES FROM django_rw;
-  ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE USAGE, SELECT, UPDATE ON SEQUENCES FROM django_rw;
-  DROP USER django_rw;
-  DROP USER django_migrate;
-  ```
+- In the event database issues arise, run the following sequence of commands to purge above actions:  
+```sql
+DROP DATABASE djangodb;
+DROP USER django_app;
+DROP SCHEMA django;
+ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE SELECT, INSERT, UPDATE, DELETE ON TABLES FROM django_rw;
+ALTER DEFAULT PRIVILEGES FOR USER django_migrate REVOKE USAGE, SELECT, UPDATE ON SEQUENCES FROM django_rw;
+DROP USER django_rw;
+DROP USER django_migrate;
+```
 - Create a password storage method:
   - Add the following to settings.py:
   ```python
@@ -151,7 +151,7 @@ class Choice(models.Model):
         return self.choice_text
 ```
 ## Admin site:
-Pretty self-explanatory. Admin superusers are created by running ```python manage.py createsuperuser```. The admin.py file can be used to edit front end model content from an administrative perspective. An example can be seen below using the Question model in the polls app:
+Admin superusers are created by running ```python manage.py createsuperuser```. The admin.py file can be used to edit front end model content from an administrative perspective. An example can be seen below using the Question model in the polls app:
 ```python
 from django.contrib import admin
 
