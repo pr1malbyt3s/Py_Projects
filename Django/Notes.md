@@ -140,7 +140,11 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
+    was_published_recently.admin_order_field = 'pub_date'
+    was_published_recently.boolean = True
+    was_published_recently.short_description = 'Published recently?'
 
 # Choice model:
 class Choice(models.Model):
@@ -154,11 +158,26 @@ class Choice(models.Model):
 Admin superusers are created by running ```python manage.py createsuperuser```. The admin.py file can be used to edit front end model content from an administrative perspective. An example can be seen below using the Question model in the polls app:
 ```python
 from django.contrib import admin
+from .models import Choice, Question
 
-from .models import Question
+class ChoiceInline(admin.TabularInline):
+    model = Choice
+    extra = 3
 
-admin.site.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['question_text']}),
+        ('Date Information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+    ]
+    inlines = [ChoiceInline]
+    list_display = ('question_text', 'pub_date', 'was_published_recently')
+    list_filter = ['pub_date']
+    search_fields = ['question_text']
+
+admin.site.register(Question, QuestionAdmin)
+
 ```
+This example makes use of additional model fields to show the admin polls page in a tabular layout. 
 ## Views:
 A view is a "type" of Web page in Django generally serving a specific function and having a specific template. Examples for the polls application include:
 - Question 'index' page displaying the latest few question.
@@ -168,20 +187,45 @@ A view is a "type" of Web page in Django generally serving a specific function a
 Each view is represented as a Python function or method. Views also need corresponding URL mappings. Below are examples of corresponding views.py and urls.py pages for the polls application:
 ```python
 # views.py
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.utils import timezone
+from django.views import generic
+from .models import Choice, Question
 
-def index(request):
-    return HttpResponse("At the polls index.")
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+    def get_queryset(self):
+        """Exclude any questions not yet published."""
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the voting form:
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "Please select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 ```
 ```python
 # urls.py
@@ -189,13 +233,14 @@ from django.urls import path
 
 from . import views
 
+app_name = 'polls'
 urlpatterns = [
     # Ex: /polls/
-    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     # Ex: /polls/<#>/
-    path('<int:question_id>/', views.detail, name='detail'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # Ex: /polls/<#>/results/
-    path('<int:question_id>/results/', views.results, name='results'),
+    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     # Ex: /polls/<#>/vote/
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
