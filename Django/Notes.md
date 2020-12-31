@@ -245,7 +245,50 @@ urlpatterns = [
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
 ```
-**Need to add more about forms and generic views**
+To make view data usable, it must be presented using HTML templates. Templates should be stored under site directories by respective applications. For example, this polls application's templates should be created in the ```mysite/polls/templates/polls/``` directory. Each view uses a respective template. These templates utilize Django's template language for customizing HTML using variables and tags. Generic views are helpful in reducing the amount of code needed for each view class. An example of the polls view templates can be seen below:
+```html
+<!-- index.html -->
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+{% if latest_question_list %}
+	<ul>
+		{% for question in latest_question_list %}
+		<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No polls are available.</p>
+{% endif %}
+```
+```html
+<!-- detail.html -->
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+	<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+	<label for="choice{{ forloop.counter  }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input type="submit" value="Vote">
+</form>
+```
+```html
+<!-- results.html -->
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+	<li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+```
 ## Tests:
 **Need to add a tests section**
 ## Static Files:
