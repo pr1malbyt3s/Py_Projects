@@ -3,6 +3,7 @@
 # 2. Starts with a letter
 # 3. Contains only letters, numbers, and the underscore character
 # 4. Does not end with an underscore
+# Valid regex solution is r"^[a-zA-Z][\w_]{2,23}[^_]$"
 
 def CodelandUsernameValidation(strParam: str) -> bool:
   # Check if length is between 4 and 25:
