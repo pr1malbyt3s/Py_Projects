@@ -20,5 +20,5 @@ print(LongestWord(input()))
 # This could have been accomplished a little simpler using:
 '''
 regex = re.compile(r'\W+')
-parsed = pattern.split(sen)
+parsed = regex.split(sen)
 '''
