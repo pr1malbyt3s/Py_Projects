@@ -15,3 +15,10 @@ def LongestWord(sen):
 
 # keep this function call here 
 print(LongestWord(input()))
+
+# After reviewing solutions, I discovered re has its own split function.
+# This could have been accomplished a little simpler using:
+'''
+regex = re.compile(r'\W+')
+parsed = pattern.split(sen)
+'''
