@@ -4,9 +4,9 @@
 
 def FindIntersection(strArr):
   # Parse the first string from the list:
-  l1 = [int(i.strip()) for i in strArr[0].split(",")]
+  l1 = [int(i) for i in strArr[0].split(", ")]
   # Parse the second string from the list:
-  l2 = [int(i.strip()) for i in strArr[1].split(",")]
+  l2 = [int(i) for i in strArr[1].split(", ")]
   # Sort the intersection as numbers:
   lx = sorted(list(set(l1).intersection(l2)))
   # Recreate the list as string values:
